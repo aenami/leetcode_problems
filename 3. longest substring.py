@@ -1,11 +1,3 @@
-
-'''
-Tomo cada letra de la cadena y voy creando subcadenas que no tengan letras repetidas.
-Luego esas subcadenas las guardo en una lista y al final devuelvo la longitud de la subcadena más larga.
-Condiciones:
-La letra que se vaya a agregar no debe de estar repetida en la cadena que se esta creando
-'''
-
 class Solution(object):
     @classmethod
     def devolverCadena(self, listaLetras):
@@ -26,7 +18,7 @@ class Solution(object):
         print('Valores finales')
         print(cadena_mas_larga)
         return len(cadena_mas_larga) # Devolviendo la longitud de la subcadena mas larga
-    
+
     @classmethod
     def iterar_cadena_principal(self, inicio, fin, paso, s):
         lista_subcadenas = []
@@ -56,24 +48,21 @@ class Solution(object):
 
     @classmethod
     def lengthOfLongestSubstring(self, s):
+        Cadena_mayor_longitud = 0
+
         if len(s) == 0: # Caso en el que la longitud sea de 0
             return 0
         elif len(s) == 1: # Caso en el que la longitud de la cadena sea de 1
             return 1
-
-        # Iterando la cadena principal por la izquierda
-        cadena_mayor1 = Solution.iterar_cadena_principal(0, len(s), 1, s)
-
-        # Recorriendo por la derecha la cadena dada
-        cadena_mayor2 = Solution.iterar_cadena_principal(len(s)-1, -1, -1, s)
-
-        if cadena_mayor1 > cadena_mayor2:
-            return cadena_mayor1
-        elif cadena_mayor2 > cadena_mayor1:
-            return cadena_mayor2
-        else:
-            return cadena_mayor1
+        
+        # Iterando la cadena
+        for i in range(0, len(s), 1): # Se itera la cadena cada vez iniciando desde un inidice mayor
+            if Cadena_mayor_longitud < len(s) - i: # Verifica si es posible encontrar una subcadena mas larga que la actual
+                cadena_mayor_temporal = Solution.iterar_cadena_principal(i, len(s), 1, s)
+                if cadena_mayor_temporal > Cadena_mayor_longitud: # Verifica si la subcadena nueva es mayor que la antigua
+                    Cadena_mayor_longitud = cadena_mayor_temporal
+        return Cadena_mayor_longitud
 
 if __name__ == "__main__":
-    lenght = Solution.lengthOfLongestSubstring('dvdf')
+    lenght = Solution.lengthOfLongestSubstring('asjrgapa"')
     print(lenght)
