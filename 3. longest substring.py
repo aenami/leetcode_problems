@@ -26,45 +26,13 @@ class Solution(object):
         print('Valores finales')
         print(cadena_mas_larga)
         return len(cadena_mas_larga) # Devolviendo la longitud de la subcadena mas larga
-
+    
     @classmethod
-    def lengthOfLongestSubstring(self, s):
-        if len(s) == 0: # Caso en el que la longitud sea de 0
-            return 0
-        elif len(s) == 1: # Caso en el que la longitud de la cadena sea de 1
-            return 1
-
+    def iterar_cadena_principal(self, inicio, fin, paso, s):
         lista_subcadenas = []
         cadena = []
 
-        # Iterando la cadena principal por la izquierda
-        for i, letra in enumerate(s):
-            # Caso final en el que no hayan letras repetidas en la cadena
-            if i == len(s)-1 and len(lista_subcadenas) == 0 and not letra in cadena or not letra in cadena and i == len(s)-1:
-                cadena.append(letra) 
-                cadena_completa = Solution.devolverCadena(cadena) 
-                lista_subcadenas.append(cadena_completa)
-            # Verifica si es la ultima letra en la cadena principal en ser recorrida
-            elif i == len(s)-1 and letra in cadena:
-                cadena_completa = Solution.devolverCadena(cadena) # Devuelve la cadena 
-                lista_subcadenas.append(cadena_completa) # Agregas la cadena a la lista 
-            elif letra in cadena: # Verifica si la letra esta repetida en la cadena actual
-                cadena_completa = Solution.devolverCadena(cadena)
-                lista_subcadenas.append(cadena_completa) 
-                cadena.clear()
-                cadena.append(letra)
-            # Verficar que la letra no sea repetida
-            elif not letra in cadena:
-                cadena.append(letra) # Se agrega la letra a la lista que simula la cadena
-        
-        # Funcion que devolvera la longitud de cadena mas larga
-        cadena_mayor1 = Solution.comparar_longitud(lista_subcadenas)
-
-        lista_subcadenas = []
-        cadena = []
-        
-        # Iterando la cadena principal por la derecha
-        for i in range(len(s)-1, -1, -1):
+        for i in range(inicio, fin, paso):
             # Caso final en el que no hayan letras repetidas en la cadena
             if i == len(s)-1 and len(lista_subcadenas) == 0 and not s[i] in cadena or not s[i] in cadena and s[i] == len(s)-1:
                 cadena.append(s[i]) 
@@ -82,9 +50,22 @@ class Solution(object):
             # Verficar que la letra no sea repetida
             elif not s[i] in cadena:
                 cadena.append(s[i]) # Se agrega la letra a la lista que simula la cadena
-        
         # Funcion que devolvera la longitud de cadena mas larga
-        cadena_mayor2 = Solution.comparar_longitud(lista_subcadenas)
+        cadena_mayor = Solution.comparar_longitud(lista_subcadenas)
+        return cadena_mayor
+
+    @classmethod
+    def lengthOfLongestSubstring(self, s):
+        if len(s) == 0: # Caso en el que la longitud sea de 0
+            return 0
+        elif len(s) == 1: # Caso en el que la longitud de la cadena sea de 1
+            return 1
+
+        # Iterando la cadena principal por la izquierda
+        cadena_mayor1 = Solution.iterar_cadena_principal(0, len(s), 1, s)
+
+        # Recorriendo por la derecha la cadena dada
+        cadena_mayor2 = Solution.iterar_cadena_principal(len(s)-1, -1, -1, s)
 
         if cadena_mayor1 > cadena_mayor2:
             return cadena_mayor1
