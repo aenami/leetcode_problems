@@ -37,16 +37,8 @@ class Solution(object):
         lista_subcadenas = []
         cadena = []
 
-        # Iterando la cadena principal
+        # Iterando la cadena principal por la izquierda
         for i, letra in enumerate(s):
-            # Depuracion----
-            print(f'Iteracion: {i}')
-            print(f'Primera condicion: {i == len(s)-1 and len(lista_subcadenas) == 0 and not letra in cadena:}')
-            print(f'Segunda condicion: {i == len(s)-1 and letra in cadena}')
-            print(f'Tercera condicion: {letra in cadena}')
-            print(f'Cuarta condicion: {not letra in cadena}')
-
-
             # Caso final en el que no hayan letras repetidas en la cadena
             if i == len(s)-1 and len(lista_subcadenas) == 0 and not letra in cadena or not letra in cadena and i == len(s)-1:
                 cadena.append(letra) 
@@ -64,12 +56,42 @@ class Solution(object):
             # Verficar que la letra no sea repetida
             elif not letra in cadena:
                 cadena.append(letra) # Se agrega la letra a la lista que simula la cadena
-
+        
         # Funcion que devolvera la longitud de cadena mas larga
-        cadena_mayor = Solution.comparar_longitud(lista_subcadenas)
-        return cadena_mayor
+        cadena_mayor1 = Solution.comparar_longitud(lista_subcadenas)
 
+        lista_subcadenas = []
+        cadena = []
+        
+        # Iterando la cadena principal por la derecha
+        for i in range(len(s)-1, -1, -1):
+            # Caso final en el que no hayan letras repetidas en la cadena
+            if i == len(s)-1 and len(lista_subcadenas) == 0 and not s[i] in cadena or not s[i] in cadena and s[i] == len(s)-1:
+                cadena.append(s[i]) 
+                cadena_completa = Solution.devolverCadena(cadena) 
+                lista_subcadenas.append(cadena_completa)
+            # Verifica si es la ultima letra en la cadena principal en ser recorrida
+            elif i == len(s)-1 and s[i] in cadena:
+                cadena_completa = Solution.devolverCadena(cadena) # Devuelve la cadena 
+                lista_subcadenas.append(cadena_completa) # Agregas la cadena a la lista 
+            elif s[i] in cadena: # Verifica si la letra esta repetida en la cadena actual
+                cadena_completa = Solution.devolverCadena(cadena)
+                lista_subcadenas.append(cadena_completa) 
+                cadena.clear()
+                cadena.append(s[i])
+            # Verficar que la letra no sea repetida
+            elif not s[i] in cadena:
+                cadena.append(s[i]) # Se agrega la letra a la lista que simula la cadena
+        
+        # Funcion que devolvera la longitud de cadena mas larga
+        cadena_mayor2 = Solution.comparar_longitud(lista_subcadenas)
 
+        if cadena_mayor1 > cadena_mayor2:
+            return cadena_mayor1
+        elif cadena_mayor2 > cadena_mayor1:
+            return cadena_mayor2
+        else:
+            return cadena_mayor1
 
 if __name__ == "__main__":
     lenght = Solution.lengthOfLongestSubstring('dvdf')
